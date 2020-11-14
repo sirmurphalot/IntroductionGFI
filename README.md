@@ -17,7 +17,8 @@ This repository is organized into four different directories; one for each of th
 Packages Required
 ============
 
--RStan \n
+-RStan 
+
 -ggplot2
 -latex2exp
 -ggExtra

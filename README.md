@@ -17,22 +17,7 @@ This repository is organized into four different directories; one for each of th
 Packages Required
 ============
 
--RStan 
-
--ggplot2
--latex2exp
--ggExtra
--gridExtra
--knitr
--mvtnorm
--matrixcalc
--gtools
--geigen
--readr
--dplyr
--tidyr
--lmerTest
--BayesFactor
+RStan, ggplot2, latex2exp, ggExtra, gridExtra, knitr, mvtnorm, matrixcalc, gtools, geigen, readr, dplyr, tidyr, lmerTest, BayesFactor
 
 Citation
 ============

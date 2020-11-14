@@ -4,6 +4,12 @@
 ########### Author: Alexander Murph, UNC ###########
 ############### November 4th, 2019 #################
 ####################################################
+###############################
+##### IMPORTANT NOTE
+###############################
+##### All descriptions of these methods is available in the Pseudocode
+##### titled BinomialPseudo.pdf.  We would highly suggest that a
+##### curious reader look here to understand the following methods.
 third_mean_numerical_bin = function(N, s){
   # Function that returns alpha-confidence interval using the third mean of the sth and
   # sth+1 uniform order statistics, with the third mean of a bernoulli distribution.

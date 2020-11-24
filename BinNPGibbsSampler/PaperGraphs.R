@@ -7,16 +7,20 @@
 #####################################################
 
 ### This script has the code for the Bin n,p unknown graphs in the paper.
-
 library(ggplot2)
 library(ggExtra)
 library(gridExtra)
+library(latex2exp)
 
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
 x = read.csv("FinalPosteriors/all_data0151.csv")
+n = 15
+p = 0.1
+number_of_iterations = 10000
+Mid = floor(3*number_of_iterations/4)
 x = x[which(x$iteration_number %in% floor(number_of_iterations/2):number_of_iterations),]
 error_bar_data = x
 error_bar_data$lower_mu = error_bar_data$lower_p*error_bar_data$n_value
@@ -25,10 +29,6 @@ error_bar_data$upper_mu = error_bar_data$upper_p*error_bar_data$n_value
                                           # floor(number_of_iterations/2))/floor(number_of_iterations/2)
 n_hat = read.csv("FinalPosteriors/first_n0151.csv")$x
 first_mu = read.csv("FinalPosteriors/first_mu0151.csv")$x
-n = 15
-p = 0.1
-number_of_iterations = 10000
-Mid = floor(3*number_of_iterations/4)
 pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
                                               ymax = upper_mu, y = (lower_mu + upper_mu)/2,
                                               color = iteration_number)) +
@@ -126,12 +126,40 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
 
+## Marginal Plot
+summary(error_bar_data)
+marginal_ns = NULL
+marginal_mus = NULL
+for(i in unique(error_bar_data$iteration_number)){
+  draw_indices = which(error_bar_data$iteration_number == i)
+  mus = c( min(error_bar_data$lower_mu[draw_indices]), max(error_bar_data$upper_mu[draw_indices]))
+  ns = c( min(error_bar_data$n_value[draw_indices]), max(error_bar_data$n_value[draw_indices]))
+  
+  bern_1 = 2 - rbinom(1,size=1,prob=0.5)
+  bern_2 = 2 - rbinom(1,size=1,prob=0.5)
+  
+  marginal_mus = c(marginal_mus,mus[bern_1])
+  marginal_ns = c(marginal_ns,ns[bern_2])
+}
+
+graph_data = data.frame(x=5000:10000,mus=marginal_mus)
+p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
+p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
+n = 75
+p = 0.1
+number_of_iterations = 10000
 x = read.csv("FinalPosteriors/all_data0751.csv")
 x = x[which(x$iteration_number %in% floor(number_of_iterations/2):number_of_iterations),]
 error_bar_data = x
@@ -141,9 +169,7 @@ error_bar_data$upper_mu = error_bar_data$upper_p*error_bar_data$n_value
 # floor(number_of_iterations/2))/floor(number_of_iterations/2)
 n_hat = read.csv("FinalPosteriors/first_n0751.csv")$x
 first_mu = read.csv("FinalPosteriors/first_mu0751.csv")$x
-n = 75
-p = 0.1
-number_of_iterations = 10000
+
 Mid = floor(3*number_of_iterations/4)
 pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
                                               ymax = upper_mu, y = (lower_mu + upper_mu)/2,
@@ -241,13 +267,40 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
 
+## Marginal Plot
+summary(error_bar_data)
+marginal_ns = NULL
+marginal_mus = NULL
+for(i in unique(error_bar_data$iteration_number)){
+  draw_indices = which(error_bar_data$iteration_number == i)
+  mus = c( min(error_bar_data$lower_mu[draw_indices]), max(error_bar_data$upper_mu[draw_indices]))
+  ns = c( min(error_bar_data$n_value[draw_indices]), max(error_bar_data$n_value[draw_indices]))
+  
+  bern_1 = 2 - rbinom(1,size=1,prob=0.5)
+  bern_2 = 2 - rbinom(1,size=1,prob=0.5)
+  
+  marginal_mus = c(marginal_mus,mus[bern_1])
+  marginal_ns = c(marginal_ns,ns[bern_2])
+}
+
+graph_data = data.frame(x=5000:10000,mus=marginal_mus)
+p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
+p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
-
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
+n = 15
+p = 0.9
+number_of_iterations = 10000
 x = read.csv("FinalPosteriors/all_data2159.csv")
 x = x[which(x$iteration_number %in% floor(number_of_iterations/2):number_of_iterations),]
 error_bar_data = x
@@ -257,9 +310,7 @@ error_bar_data$upper_mu = error_bar_data$upper_p*error_bar_data$n_value
 # floor(number_of_iterations/2))/floor(number_of_iterations/2)
 n_hat = read.csv("FinalPosteriors/first_n2159.csv")$x
 first_mu = read.csv("FinalPosteriors/first_mu2159.csv")$x
-n = 15
-p = 0.9
-number_of_iterations = 10000
+
 Mid = floor(3*number_of_iterations/4)
 
 error_bar_data$iteration_number = as.factor(error_bar_data$iteration_number)
@@ -362,6 +413,31 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
 
+## Marginal Plot
+summary(error_bar_data)
+marginal_ns = NULL
+marginal_mus = NULL
+for(i in unique(error_bar_data$iteration_number)){
+  draw_indices = which(error_bar_data$iteration_number == i)
+  mus = c( min(error_bar_data$lower_mu[draw_indices]), max(error_bar_data$upper_mu[draw_indices]))
+  ns = c( min(error_bar_data$n_value[draw_indices]), max(error_bar_data$n_value[draw_indices]))
+  
+  bern_1 = 2 - rbinom(1,size=1,prob=0.5)
+  bern_2 = 2 - rbinom(1,size=1,prob=0.5)
+  
+  marginal_mus = c(marginal_mus,mus[bern_1])
+  marginal_ns = c(marginal_ns,ns[bern_2])
+}
+
+graph_data = data.frame(x=5000:10000,mus=marginal_mus)
+p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
+p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
 ###############################################################################################
@@ -369,6 +445,9 @@ grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, width
 ###############################################################################################
 ###############################################################################################
 x = read.csv("FinalPosteriors/all_data0759.csv")
+n = 75
+p = 0.9
+number_of_iterations = 10000
 x = x[which(x$iteration_number %in% floor(number_of_iterations/2):number_of_iterations),]
 error_bar_data = x
 error_bar_data$lower_mu = error_bar_data$lower_p*error_bar_data$n_value
@@ -377,9 +456,7 @@ error_bar_data$upper_mu = error_bar_data$upper_p*error_bar_data$n_value
 # floor(number_of_iterations/2))/floor(number_of_iterations/2)
 n_hat = read.csv("FinalPosteriors/first_n0759.csv")$x
 first_mu = read.csv("FinalPosteriors/first_mu0759.csv")$x
-n = 75
-p = 0.9
-number_of_iterations = 10000
+
 Mid = floor(3*number_of_iterations/4)
 
 error_bar_data$iteration_number = as.factor(error_bar_data$iteration_number)
@@ -481,4 +558,32 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
 
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
+
+
+## Marginal Plot
+summary(error_bar_data)
+marginal_ns = NULL
+marginal_mus = NULL
+for(i in unique(error_bar_data$iteration_number)){
+  draw_indices = which(error_bar_data$iteration_number == i)
+  mus = c( min(error_bar_data$lower_mu[draw_indices]), max(error_bar_data$upper_mu[draw_indices]))
+  ns = c( min(error_bar_data$n_value[draw_indices]), max(error_bar_data$n_value[draw_indices]))
+  
+  bern_1 = 2 - rbinom(1,size=1,prob=0.5)
+  bern_2 = 2 - rbinom(1,size=1,prob=0.5)
+  
+  marginal_mus = c(marginal_mus,mus[bern_1])
+  marginal_ns = c(marginal_ns,ns[bern_2])
+}
+
+graph_data = data.frame(x=5000:10000,mus=marginal_mus)
+p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
+p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
+  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+grid.arrange(p1,p2, ncol=1, nrow=2)
+
 

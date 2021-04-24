@@ -74,7 +74,9 @@ results_siga$eta = as.character(results_siga$eta)
 #### CREATE PLOTS
 ggplot(results_siga, aes(x = eta, y = coverage95)) + geom_boxplot(fill = "skyblue")+ 
   scale_x_discrete(labels = c('eta<1' = expression(eta<1),'eta>=1'= expression(eta>=1))) +
-  xlab("") + ylab("Empirical Coverage of 95% Credible Interval")
+  xlab("") + ylab("Empirical Coverage of 95% Confidence Interval")+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=17), legend.title = element_text(size=20), legend.text = element_text(size=17))
 
 ggplot(results_siga, aes(x = aveLength, y = data)) + geom_boxplot(fill = "cyan") + 
   ylab(TeX("data source:(Group, $\\sigma^2_a$, $\\sigma^2_e$)")) +

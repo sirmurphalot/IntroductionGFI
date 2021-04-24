@@ -17,11 +17,16 @@ ggplot(temp_data, aes(x=value,color=description)) + stat_ecdf() +
   xlab("Nominal Coverage")+ylab("Empirical Coverage")+ 
   scale_color_discrete(name = "description", labels = c("FM Distance","Frobenius Parameter", "Frobenius Distance",
                                                         "LogDet Parameter", "Stein's Loss", "Spectral Norm Parameter",
-                                                        "Spectral Norm Distance")) +theme(text = element_text(size=20))
+                                                        "Spectral Norm Distance")) + 
+  theme(text = element_text(size=30), axis.text.x = element_text(angle = 90), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
+
 temp_data = full_data[which(full_data$description%in%c("QQ_Mu") ),]
 ggplot(temp_data, aes(x=value,color=description)) + stat_ecdf() + 
   scale_color_discrete(name = "description", labels = c("Upper CI on Mu"))+
-  xlab("Nominal Coverage")+ylab("Empirical Coverage")+theme(text = element_text(size=20))
+  xlab("Nominal Coverage")+ylab("Empirical Coverage")+ 
+  theme(text = element_text(size=30), axis.text.x = element_text(angle = 90), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 
 
 temp_data = full_data[which(full_data$description%in%c("Loss1_95CI_ContainsTruth",

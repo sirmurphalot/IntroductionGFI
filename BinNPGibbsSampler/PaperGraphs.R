@@ -33,15 +33,17 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
                                               ymax = upper_mu, y = (lower_mu + upper_mu)/2,
                                               color = iteration_number)) +
   coord_flip() +
-  geom_errorbar(position = position_dodge(1)) + ylab(TeX("$\\mu$")) +
+  geom_errorbar(position = position_dodge(1)) + xlab(TeX("$n$")) + ylab(TeX("$\\mu$")) +
   scale_color_gradient2(midpoint = Mid, low="white", mid = "skyblue", high="navyblue") +
-  theme(legend.position = "none", text = element_text(size=20)) + 
+  theme(legend.position = "none") + 
   geom_point(size = -1) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
   geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 pmainTest
 
 range_mus = c()
@@ -91,7 +93,7 @@ top_density <- ggplot(confidence_curve_data, aes(x = mu, y = Confidence)) +
   geom_line( color = "blue") +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_mu, max_mu)) +
-  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"), text = element_text(size=20)) +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"), text = element_text(size=20), axis.text.x = element_text(size=20)) +
   ylab('') +
   xlab('')
 
@@ -117,11 +119,12 @@ confidence_curve_data$Confidence = sapply(confidence_curve_data$n, conf.value)
 right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
   geom_line( color = "blue") +
   coord_flip() +
-  theme(text = element_text(size=20)) +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_n, max_n)) +
   ylab('') +
-  xlab('')
+  xlab('')+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), axis.text.x = element_text(angle=270,size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
@@ -144,11 +147,11 @@ for(i in unique(error_bar_data$iteration_number)){
 
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
   geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
   geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
@@ -175,15 +178,19 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
                                               ymax = upper_mu, y = (lower_mu + upper_mu)/2,
                                               color = iteration_number)) +
   coord_flip() +
-  geom_errorbar(position = position_dodge(1)) + ylab(TeX("$\\mu$")) +
+  geom_errorbar(position = position_dodge(1)) + xlab(TeX("$n$")) + ylab(TeX("$\\mu$")) +
   scale_color_gradient2(midpoint = Mid, low="white", mid = "skyblue", high="navyblue") +
-  theme(legend.position = "none") + 
+  # theme(legend.position = "none") + 
   geom_point(size = -1) +
+  labs( color ="Iteration Number\n")+
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
-  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"),
+        legend.key.height = unit(1, "inch"))+
   geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=30))
 pmainTest
 
 range_mus = c()
@@ -233,7 +240,7 @@ top_density <- ggplot(confidence_curve_data, aes(x = mu, y = Confidence)) +
   geom_line( color = "blue") +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_mu, max_mu)) +
-  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines")) +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"), text = element_text(size=20), axis.text.x = element_text(size=20)) +
   ylab('') +
   xlab('')
 
@@ -262,7 +269,9 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_n, max_n)) +
   ylab('') +
-  xlab('')
+  xlab('')+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), axis.text.x = element_text(angle=270,size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
@@ -285,11 +294,11 @@ for(i in unique(error_bar_data$iteration_number)){
 
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
   geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
   geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
@@ -321,15 +330,17 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
                                               ymax = upper_mu, y = (lower_mu + upper_mu)/2,
                                               color = iteration_number)) +
   coord_flip() +
-  geom_errorbar(position=position_dodge(1)) + ylab(TeX("$\\mu$")) +
-  theme(legend.position = "none") + 
+  geom_errorbar(position=position_dodge(1)) + ylab(TeX("$\\mu$")) + xlab(TeX("$n$")) +
+  theme(legend.position = "none") +
   geom_point(size = -1) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   colScale +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
   geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 pmainTest
 
 range_mus = c()
@@ -379,7 +390,7 @@ top_density <- ggplot(confidence_curve_data, aes(x = mu, y = Confidence)) +
   geom_line( color = "blue") +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_mu, max_mu)) +
-  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines")) +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"), text = element_text(size=20), axis.text.x = element_text(size=20)) +
   ylab('') +
   xlab('')
 
@@ -408,7 +419,10 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_n, max_n)) +
   ylab('') +
-  xlab('')
+  xlab('') + 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), axis.text.x = element_text(angle=270,size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
+
 
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
@@ -431,11 +445,11 @@ for(i in unique(error_bar_data$iteration_number)){
 
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
   geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
   geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
@@ -467,15 +481,17 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
                                               ymax = upper_mu, y = (lower_mu + upper_mu)/2,
                                               color = iteration_number)) +
   coord_flip() +
-  geom_errorbar(position=position_dodge(1)) + ylab(TeX("$\\mu$")) +
-  theme(legend.position = "none") + 
+  geom_errorbar(position=position_dodge(1)) + ylab(TeX("$\\mu$")) + xlab(TeX("$n$")) +
+  theme(legend.position = "none") +
   geom_point(size = -1) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   colScale +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
   geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 pmainTest
 
 range_mus = c()
@@ -525,7 +541,7 @@ top_density <- ggplot(confidence_curve_data, aes(x = mu, y = Confidence)) +
   geom_line( color = "blue") +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_mu, max_mu)) +
-  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines")) +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"), text = element_text(size=20), axis.text.x = element_text(size=20)) +
   ylab('') +
   xlab('')
 
@@ -554,7 +570,10 @@ right_boxplot <- ggplot(confidence_curve_data, aes(y = Confidence, x = n_val)) +
   scale_x_continuous(expand = c(0, 0)) +
   expand_limits(x = c(min_n, max_n)) +
   ylab('') +
-  xlab('')
+  xlab('') + 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), axis.text.x = element_text(angle=270,size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
+
 
 
 grid.arrange(top_density, empty, pmainTest, right_boxplot, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
@@ -578,12 +597,101 @@ for(i in unique(error_bar_data$iteration_number)){
 
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("")+ ylab(TeX("$\\mu$")) +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
   geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
-  theme(legend.position = "none", text = element_text(size=20)) + xlab("iteration") + ylab("n") +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
   geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
+
+### Example mu vs p parameterization figure
+## p parameterization
+error_bar_data = data.frame(upper_mu = -50*((1:30)/1000)^2 + 0.3, 
+                            lower_mu = 50*((1:30)/1000)^2 + 0.1, 
+                            n_value = rep(1:30),
+                            iteration_number = rep(1,times=30))
+error_bar_data$lower_p = error_bar_data$lower_mu / error_bar_data$n_value
+error_bar_data$upper_p = error_bar_data$upper_mu / error_bar_data$n_value
+
+error_bar_data$iteration_number = as.factor(error_bar_data$iteration_number)
+
+pmainTest = ggplot() +
+  geom_errorbar(data = error_bar_data,
+                mapping = aes(x = n_value, ymin = lower_p,
+                              ymax = upper_p, y = (lower_p + upper_p)/2),color = "blue") +
+  ylab(TeX("$p$")) +
+  xlab(TeX("$n$")) + ylim(0,0.4) + xlim(0,33) +
+  coord_flip() +
+  geom_point(size = -1) +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines")) + 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
+pmainTest
+
+## mu parameterization
+error_bar_data = data.frame(upper_mu = -50*((1:30)/1000)^2 + 0.3, 
+                            lower_mu = 50*((1:30)/1000)^2 + 0.1, 
+                            n_value = rep(1:30),
+                            iteration_number = rep(1,times=30))
+
+error_bar_data$iteration_number = as.factor(error_bar_data$iteration_number)
+
+pmainTest = ggplot() +
+  geom_errorbar(data = error_bar_data,
+                mapping = aes(x = n_value, ymin = lower_mu,
+                              ymax = upper_mu, y = (lower_mu + upper_mu)/2),color = "blue") +
+  ylab(TeX("$\\mu$")) +
+  xlab(TeX("$n$")) + ylim(0,0.4) + xlim(0,33) +
+  coord_flip() +
+  geom_point(size = -1) +
+  theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines")) + 
+  theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
+pmainTest
+
+
+##################################
+## Large Start Stuff
+
+x = read.csv("Datalogs/large_start_all_data0759.csv")
+n = 75
+p = 0.9
+number_of_iterations = 10000
+# x = x[which(x$iteration_number %in% floor(number_of_iterations/2):number_of_iterations),]
+error_bar_data = x
+error_bar_data$lower_mu = error_bar_data$lower_p*error_bar_data$n_value
+error_bar_data$upper_mu = error_bar_data$upper_p*error_bar_data$n_value
+# error_bar_data$color_scale = as.numeric(error_bar_data$iteration_number - 
+# floor(number_of_iterations/2))/floor(number_of_iterations/2)
+n_hat = read.csv("Datalogs/large_start_first_n0759.csv")$x
+first_mu = read.csv("Datalogs/large_start_first_mu0759.csv")$x
+
+## Marginal Plot
+summary(error_bar_data)
+marginal_ns = NULL
+marginal_mus = NULL
+for(i in unique(error_bar_data$iteration_number)){
+  draw_indices = which(error_bar_data$iteration_number == i)
+  mus = c( min(error_bar_data$lower_mu[draw_indices]), max(error_bar_data$upper_mu[draw_indices]))
+  ns = c( min(error_bar_data$n_value[draw_indices]), max(error_bar_data$n_value[draw_indices]))
+  
+  bern_1 = 2 - rbinom(1,size=1,prob=0.5)
+  bern_2 = 2 - rbinom(1,size=1,prob=0.5)
+  
+  marginal_mus = c(marginal_mus,mus[bern_1])
+  marginal_ns = c(marginal_ns,ns[bern_2])
+}
+
+graph_data = data.frame(x=1:10000,mus=marginal_mus)
+p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("Iteration")+ ylab(TeX("$\\mu$")) +
+  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ ggtitle(TeX("Traceplot of $\\mu$"))
+p1
+graph_data2 = data.frame(x=1:10000,ns=marginal_ns) 
+p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
+  theme(legend.position = "none", text = element_text(size=25)) + xlab("Iteration") + ylab("n") +
+  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red")) + ggtitle(TeX("Traceplot of $n$"))
+p2
 

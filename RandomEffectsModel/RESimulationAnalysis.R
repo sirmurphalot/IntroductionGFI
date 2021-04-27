@@ -78,8 +78,12 @@ ggplot(results_siga, aes(x = eta, y = coverage95)) + geom_boxplot(fill = "skyblu
   theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
         axis.title.y = element_text(size=17), legend.title = element_text(size=20), legend.text = element_text(size=17))
 
-ggplot(results_siga, aes(x = aveLength, y = data)) + geom_boxplot(fill = "cyan") + 
+ggplot(results_siga, aes(x = log(aveLength+1), y = data)) + geom_boxplot(fill = "cyan") + 
   ylab(TeX("data source:(Group, $\\sigma^2_a$, $\\sigma^2_e$)")) +
   xlab(TeX("$\\log_{10}(x+1)$ of CI Lengths"))
 
+
+CI_length_data = full_data[which(full_data$metric == "Length of 95% CI on Sigma_a2"),]
+desc = function(x){print(paste("IQR",IQR(x),", Median", median(x), "\n"))}
+tapply(CI_length_data$value, CI_length_data$data, desc)
 

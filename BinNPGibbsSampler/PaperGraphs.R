@@ -606,6 +606,11 @@ p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
+
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
 ### Example mu vs p parameterization figure
 ## p parameterization
 error_bar_data = data.frame(upper_mu = -50*((1:30)/1000)^2 + 0.3, 
@@ -652,6 +657,10 @@ pmainTest = ggplot() +
 pmainTest
 
 
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
 ##################################
 ## Large Start Stuff
 
@@ -695,3 +704,65 @@ p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
   geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red")) + ggtitle(TeX("Traceplot of $n$"))
 p2
 
+
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
+# Marginal Coverages Information for Table:
+simulation_data = data.frame(TrueMu = NA,
+                             TrueN = NA,
+                             TrueP = NA,
+                             DataSize = NA,
+                             SimulationNumber = NA,
+                             pois_belief_lower_bound_mu = NA,
+                             pois_belief_upper_bound_mu = NA,
+                             pois_belief_lower_bound_n = NA,
+                             pois_belief_upper_bound_n = NA,
+                             pois_belief_contains_truth = NA,
+                             pois_plausability_lower_bound_mu = NA,
+                             pois_plausability_upper_bound_mu = NA,
+                             pois_plausability_lower_bound_n = NA,
+                             pois_plausability_upper_bound_n = NA,
+                             pois_plausability_contains_truth = NA,
+                             nopois_belief_lower_bound_mu = NA,
+                             nopois_belief_upper_bound_mu = NA,
+                             nopois_belief_lower_bound_n = NA,
+                             nopois_belief_upper_bound_n = NA,
+                             nopois_belief_contains_truth = NA,
+                             nopois_plausability_lower_bound_mu = NA,
+                             nopois_plausability_upper_bound_mu = NA,
+                             nopois_plausability_lower_bound_n = NA,
+                             nopois_plausability_upper_bound_n = NA,
+                             nopois_plausability_contains_truth = NA,
+                             n_upper_CI = NA,
+                             n_lower_CI = NA,
+                             mu_upper_CI = NA,
+                             mu_lower_CI = NA)
+
+#### SET PARAMETERS
+p_values = c(0.1, 0.5, 0.9)
+data_sizes = c(100)
+true_ns  = c(15, 75)
+
+#### COMPILE DATA FROM BINDATA DIRECTORY
+for(name in list.files(path = "BinData/")){
+  new_rows = read.csv(paste("BinData/", name, sep = ""))
+  new_rows$X = NULL
+  new_rows = new_rows[-1,]
+  simulation_data = rbind(simulation_data, new_rows)
+}
+simulation_data = simulation_data[-1,]
+simulation_data$nopois_plausability_contains_truth = NULL
+simulation_data$nopois_plausability_lower_bound_mu = NULL
+simulation_data$nopois_plausability_upper_bound_mu = NULL
+simulation_data$nopois_plausability_lower_bound_n = NULL
+simulation_data$nopois_plausability_upper_bound_n = NULL
+for(p_val in p_values){
+  for(n_val in true_ns){
+    simulation_data_temp = simulation_data[which( (simulation_data$TrueP==p_val) &
+                                                    (simulation_data$TrueN==n_val) ),]
+    print(paste("(",p_val,",",n_val,") mu marginal coverage: ", mean(simulation_data_temp$mu_lower_CI<=0.95) ))
+    print(paste("(",p_val,",",n_val,") n marginal coverage: ", mean(simulation_data_temp$n_lower_CI<=0.95) ))
+  }
+}

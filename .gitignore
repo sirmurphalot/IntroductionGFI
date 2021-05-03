@@ -4,3 +4,5 @@ MVNModel/Data/*
 RandomEffectsModel/Data/*
 BinNAlgorithm/binData/*
 BinNAlgorithm/MD_Data/*
+BinNPGibbsSampler/BinData/*
+BinNPGibbsSampler/DataStore/*

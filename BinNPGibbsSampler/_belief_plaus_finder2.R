@@ -14,7 +14,9 @@ belief_mass = function(posterior_draws, lower_mu, upper_mu, lower_n, upper_n){
       (temp_data$upper_mu <= upper_mu)&
       (temp_data$lower_mu >= lower_mu)
     num_included = num_included + (sum(mass_covered)==nrow(temp_data))
-    removed_particles = c(removed_particles, index)
+    if(!(sum(mass_covered)==nrow(temp_data))){
+      removed_particles = c(removed_particles, index)
+    }
   }
   return(c(num_included/total_number, removed_particles))
 }
@@ -33,7 +35,9 @@ plausability_mass = function(posterior_draws, lower_mu, upper_mu, lower_n, upper
       ((lower_mu>=temp_data$lower_mu)&(upper_mu<=temp_data$upper_mu))
     mass_covered = mean( n_fits&mu_fits )
     num_included = num_included + (sum(mass_covered)>0)
-    removed_particles = c(removed_particles, index)
+    if(!(sum(mass_covered)==nrow(temp_data))){
+      removed_particles = c(removed_particles, index)
+    }
   }
   return(c(num_included/total_number, removed_particles))
 }
@@ -56,7 +60,7 @@ belief_bounds = function(posterior_draws){
   four_corners = c(0,0,0,0)
   while(TRUE){
     if(!is.null(removed_particles)){
-      indices = which(posterior_draws$iteration_number == removed_particles)
+      indices = which(posterior_draws$iteration_number %in% removed_particles)
       all_mus = sort(unique(c(posterior_draws$upper_mu[-indices], 
                               posterior_draws$lower_mu[-indices])))
       all_ns = sort(unique(c(posterior_draws$n_value[-indices])))
@@ -72,7 +76,7 @@ belief_bounds = function(posterior_draws){
       mass_covered = belief_mass(posterior_draws, canidate_mu_lower, 
                                  canidate_mu_upper, canidate_n_lower, 
                                  temp_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
       
       if( (mass_covered >= 0.95)&(temp_n_upper >= canidate_n_lower)  ){
@@ -82,13 +86,16 @@ belief_bounds = function(posterior_draws){
       } 
     } else if(i == 1) {
       temp_mu_upper = all_mus[which(all_mus == canidate_mu_upper)-1]
+      if(  (length(temp_mu_upper) == 0) ){
+        temp_mu_upper = max(all_mus)
+      }
       
       mass_covered = belief_mass(posterior_draws, canidate_mu_lower, 
                                  temp_mu_upper, canidate_n_lower, 
                                  canidate_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
-      
+
       if((mass_covered >= 0.95)&(temp_mu_upper >= canidate_mu_lower)){
         canidate_mu_upper = temp_mu_upper
         four_corners[2] = 1
@@ -103,7 +110,7 @@ belief_bounds = function(posterior_draws){
       mass_covered = belief_mass(posterior_draws, canidate_mu_lower, 
                                  canidate_mu_upper, temp_n_lower, 
                                  canidate_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
       
       if((mass_covered >= 0.95)&(temp_n_lower <= canidate_n_upper)){
@@ -113,11 +120,14 @@ belief_bounds = function(posterior_draws){
       }
     } else {
       temp_mu_lower = all_mus[which(all_mus == canidate_mu_lower)+1]
+      if(  (length(temp_mu_lower) == 0) ){
+        temp_mu_lower = min(all_mus)
+      }
       
       mass_covered = belief_mass(posterior_draws, temp_mu_lower, 
                                  canidate_mu_upper, canidate_n_lower, 
                                  canidate_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
       
       if((mass_covered >= 0.95)&(temp_mu_lower <= canidate_mu_upper)){
@@ -138,7 +148,7 @@ belief_bounds = function(posterior_draws){
                   mu_lower = canidate_mu_lower,
                   n_upper = canidate_n_upper,
                   n_lower = canidate_n_lower,
-                  mass = mass_covered))
+                  mass = mass_covered[1]))
 }
 
 
@@ -157,7 +167,7 @@ plausability_bounds = function(posterior_draws){
   four_corners = c(0,0,0,0)
   while(TRUE){
     if(!is.null(removed_particles)){
-      indices = which(posterior_draws$iteration_number == removed_particles)
+      indices = which(posterior_draws$iteration_number %in% removed_particles)
       all_mus = sort(unique(c(posterior_draws$upper_mu[-indices], 
                               posterior_draws$lower_mu[-indices])))
       all_ns = sort(unique(c(posterior_draws$n_value[-indices])))
@@ -173,7 +183,7 @@ plausability_bounds = function(posterior_draws){
       mass_covered = plausability_mass(posterior_draws, canidate_mu_lower, 
                                        canidate_mu_upper, canidate_n_lower, 
                                        temp_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
       
       if( (mass_covered >= 0.95)&(temp_n_upper >= canidate_n_lower)  ){
@@ -183,13 +193,17 @@ plausability_bounds = function(posterior_draws){
       } 
     } else if(i == 1) {
       temp_mu_upper = all_mus[which(all_mus == canidate_mu_upper)-1]
+      if(  (length(temp_mu_upper) == 0) ){
+        temp_mu_upper = max(all_mus)
+      }
       
       mass_covered = plausability_mass(posterior_draws, canidate_mu_lower, 
                                        temp_mu_upper, canidate_n_lower, 
                                        canidate_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
-      
+      print(temp_mu_upper)
+      print(length(temp_mu_upper))
       if((mass_covered >= 0.95)&(temp_mu_upper >= canidate_mu_lower)){
         canidate_mu_upper = temp_mu_upper
         four_corners[2] = 1
@@ -204,7 +218,7 @@ plausability_bounds = function(posterior_draws){
       mass_covered = plausability_mass(posterior_draws, canidate_mu_lower, 
                                        canidate_mu_upper, temp_n_lower, 
                                        canidate_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
       
       if((mass_covered >= 0.95)&(temp_n_lower <= canidate_n_upper)){
@@ -214,11 +228,14 @@ plausability_bounds = function(posterior_draws){
       }
     } else {
       temp_mu_lower = all_mus[which(all_mus == canidate_mu_lower)+1]
+      if(  (length(temp_mu_lower) == 0) ){
+        temp_mu_lower = min(all_mus)
+      }
       
       mass_covered = plausability_mass(posterior_draws, temp_mu_lower, 
                                        canidate_mu_upper, canidate_n_lower, 
                                        canidate_n_upper)
-      removed_particles_temp = mass_covered[2:length(mass_covered)]
+      removed_particles_temp = as.integer(mass_covered[2:length(mass_covered)])
       mass_covered = mass_covered[1]
       
       if((mass_covered >= 0.95)&(temp_mu_lower <= canidate_mu_upper)){
@@ -239,5 +256,5 @@ plausability_bounds = function(posterior_draws){
                   mu_lower = canidate_mu_lower,
                   n_upper = canidate_n_upper,
                   n_lower = canidate_n_lower,
-                  mass = mass_covered))
+                  mass = mass_covered[1]))
 }

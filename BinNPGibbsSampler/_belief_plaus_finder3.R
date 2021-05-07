@@ -129,6 +129,7 @@ plausability_bounds = function(posterior_draws){
   index = 0
   four_corners = c(0,0,0,0)
   while(TRUE){
+    print(index)
     i = index%%4
     index = index + 1
     if(i == 0){

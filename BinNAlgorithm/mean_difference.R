@@ -7,8 +7,7 @@
 ########################################################
 
 source("_fid_helpers.R")
-P_values = c(0.01, 0.05, 0.1, 0.2, 0.4, 0.5, 
-             0.6, 0.7, 0.8, 0.9, 0.95, 0.99)
+P_values = c(0.01)
 ### Uncomment these if you're working with SLURM cloud computing.
 # i = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 # print(paste("Running seed:", i))

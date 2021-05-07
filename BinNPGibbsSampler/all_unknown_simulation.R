@@ -11,9 +11,9 @@
 # print(paste("Running seed:", i))
 # set.seed(i)
 ### Comment this if you're working with SLURM cloud computing.
-i = 1
+i = 336
 source("_simulation_helpers.R")
-source("_belief_plaus_finder.R")
+source("_belief_plaus_finder4.R")
 
 #### SET THE PARAMETERS
 # Assuming your are on simulation i, generate the data.
@@ -25,7 +25,7 @@ MH_sigma = MH_sigs[mod_index]
 p_values = c(p_values[mod_index])
 TrueN = true_ns[mod_index]
 data_sizes = c(100)
-iterations = 8000
+iterations = 16000
 
 simulation_data = data.frame(TrueMu = NA,
                              TrueN = NA,
@@ -63,11 +63,12 @@ for(TrueP in p_values){
     TrueMu = TrueN * TrueP
     my_data = rbinom(sample_size, size = TrueN, prob = TrueP)
     # Calculate the GFD
-    x = get_fiducial_dictionary(my_data, iterations, starting_method = "MAX", 
-                                   epsilon = 1/mean(my_data), user_n = NULL, MH_sigma)
-    write.csv(x, file = paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
-    x = x[[1]]
-    x = x[which(x$iteration_number %in% floor(iterations/2):iterations),]
+    # x = get_fiducial_dictionary(my_data, iterations, starting_method = "MAX", 
+    #                                epsilon = 1/mean(my_data), user_n = NULL, MH_sigma)
+    # write.csv(x, file = paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
+    x = read.csv(paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
+    # x = x[[1]]
+    x = x[which(x$iteration_number %in% floor(15.8*iterations/16):iterations),]
     x$lower_mu = x$lower_p * x$n_value
     x$upper_mu = x$upper_p * x$n_value
     

@@ -41,10 +41,22 @@ belief_bounds = function(posterior_draws){
   all_mus = sort(unique(c(posterior_draws$upper_mu, posterior_draws$lower_mu)))
   all_ns = sort(unique(c(posterior_draws$n_value)))
   
-  canidate_mu_upper = mean(all_mus)
-  canidate_mu_lower = mean(all_mus)
-  canidate_n_upper = median(all_ns)
-  canidate_n_lower = median(all_ns)
+  if(length(all_mus)%%2 == 0){
+    canidate_mu_upper = median(all_mus[2:length(all_mus)])
+    canidate_mu_lower = median(all_mus[2:length(all_mus)])
+  } else {
+    canidate_mu_upper = median(all_mus)
+    canidate_mu_lower = median(all_mus)
+  }
+  
+  if(length(all_ns)%%2 == 0){
+    canidate_n_upper = median(all_ns[2:length(all_ns)])
+    canidate_n_lower = median(all_ns[2:length(all_ns)])
+  } else {
+    canidate_n_upper = median(all_ns)
+    canidate_n_lower = median(all_ns)
+  }
+  
   index = 0
   four_corners = c(0,0,0,0)
   while(TRUE){
@@ -52,7 +64,10 @@ belief_bounds = function(posterior_draws){
     index = index + 1
     if(i == 0){
       four_corners = c(0,0,0,0)
-      temp_n_upper = all_ns[which(all_ns == canidate_n_upper)-1]
+      temp_n_upper = all_ns[which(all_ns == canidate_n_upper)+1]
+      if(canidate_n_upper == max(all_ns)){
+        next
+      }
       if( (length(temp_n_upper) == 0) ){
         next
       }
@@ -65,7 +80,10 @@ belief_bounds = function(posterior_draws){
         four_corners[1] = 1
       } 
     } else if(i == 1) {
-      temp_mu_upper = all_mus[which(all_mus == canidate_mu_upper)-1]
+      if(canidate_mu_upper == max(all_mus)){
+        next
+      }
+      temp_mu_upper = all_mus[which(all_mus == canidate_mu_upper)+1]
       
       mass_covered = belief_mass(posterior_draws, canidate_mu_lower, 
                                  temp_mu_upper, canidate_n_lower, 
@@ -75,7 +93,10 @@ belief_bounds = function(posterior_draws){
         four_corners[2] = 1
       }
     } else if(i == 2){
-      temp_n_lower = all_ns[which(all_ns == canidate_n_lower)+1]
+      temp_n_lower = all_ns[which(all_ns == canidate_n_lower)-1]
+      if(canidate_n_lower == min(all_ns)){
+        next
+      }
       if(  (is.na(temp_n_lower))){
         next
       }
@@ -89,7 +110,10 @@ belief_bounds = function(posterior_draws){
         four_corners[3] = 1
       }
     } else {
-      temp_mu_lower = all_mus[which(all_mus == canidate_mu_lower)+1]
+      if(canidate_mu_lower == min(all_mus)){
+        next
+      }
+      temp_mu_lower = all_mus[which(all_mus == canidate_mu_lower)-1]
       
       mass_covered = belief_mass(posterior_draws, temp_mu_lower, 
                                  canidate_mu_upper, canidate_n_lower, 
@@ -122,10 +146,22 @@ plausability_bounds = function(posterior_draws){
   all_mus = sort(unique(c(posterior_draws$upper_mu, posterior_draws$lower_mu)))
   all_ns = sort(unique(c(posterior_draws$n_value)))
   
-  canidate_mu_upper = mean(all_mus)
-  canidate_mu_lower = mean(all_mus)
-  canidate_n_upper = median(all_ns)
-  canidate_n_lower = median(all_ns)
+  if(length(all_mus)%%2 == 0){
+    canidate_mu_upper = median(all_mus[2:length(all_mus)])
+    canidate_mu_lower = median(all_mus[2:length(all_mus)])
+  } else {
+    canidate_mu_upper = median(all_mus)
+    canidate_mu_lower = median(all_mus)
+  }
+  
+  if(length(all_ns)%%2 == 0){
+    canidate_n_upper = median(all_ns[2:length(all_ns)])
+    canidate_n_lower = median(all_ns[2:length(all_ns)])
+  } else {
+    canidate_n_upper = median(all_ns)
+    canidate_n_lower = median(all_ns)
+  }
+  
   index = 0
   four_corners = c(0,0,0,0)
   while(TRUE){
@@ -133,8 +169,11 @@ plausability_bounds = function(posterior_draws){
     index = index + 1
     if(i == 0){
       four_corners = c(0,0,0,0)
-      temp_n_upper = all_ns[which(all_ns == canidate_n_upper)-1]
+      temp_n_upper = all_ns[which(all_ns == canidate_n_upper)+1]
       if( (length(temp_n_upper) == 0) ){
+        next
+      }
+      if(canidate_n_upper == max(all_ns)){
         next
       }
       mass_covered = plausability_mass(posterior_draws, canidate_mu_lower, 
@@ -146,7 +185,10 @@ plausability_bounds = function(posterior_draws){
         four_corners[1] = 1
       } 
     } else if(i == 1) {
-      temp_mu_upper = all_mus[which(all_mus == canidate_mu_upper)-1]
+      if(canidate_mu_upper == max(all_mus)){
+        next
+      }
+      temp_mu_upper = all_mus[which(all_mus == canidate_mu_upper)+1]
       
       mass_covered = plausability_mass(posterior_draws, canidate_mu_lower, 
                                        temp_mu_upper, canidate_n_lower, 
@@ -157,7 +199,10 @@ plausability_bounds = function(posterior_draws){
         four_corners[2] = 1
       }
     } else if(i == 2){
-      temp_n_lower = all_ns[which(all_ns == canidate_n_lower)+1]
+      if(canidate_n_lower == min(all_ns)){
+        next
+      }
+      temp_n_lower = all_ns[which(all_ns == canidate_n_lower)-1]
       if(  (is.na(temp_n_lower))){
         next
       }
@@ -171,7 +216,10 @@ plausability_bounds = function(posterior_draws){
         four_corners[3] = 1
       }
     } else {
-      temp_mu_lower = all_mus[which(all_mus == canidate_mu_lower)+1]
+      if(canidate_mu_lower == min(all_mus)){
+        next
+      }
+      temp_mu_lower = all_mus[which(all_mus == canidate_mu_lower)-1]
       
       mass_covered = plausability_mass(posterior_draws, temp_mu_lower, 
                                        canidate_mu_upper, canidate_n_lower, 

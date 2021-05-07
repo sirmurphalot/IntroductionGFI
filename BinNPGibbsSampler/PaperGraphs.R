@@ -109,10 +109,19 @@ empty <- ggplot()+geom_point(aes(1,1), colour="white")+
 
 confidence_curve_data = data.frame(n_val = seq(from = min_n, to = max_n, length.out = 100 ))
 post_dist_mu = ecdf(range_ns)
-conf.value = function(mu) {
-  diff = abs( 1/2 - post_dist_mu(mu)) * 2
+
+# Updating this 05/04/2021 wrt Jan's note from 04/30/2021:
+# conf.value = function(mu) {
+#   diff = abs( 1/2 - post_dist_mu(mu)) * 2
+#   return(diff)
+# }
+conf.value = function(n) {
+  less_or_equal = mean(range_ns<=n)
+  greater_or_equal = mean(range_ns>=n)
+  diff = 2*(max(c(less_or_equal,greater_or_equal))-0.5)
   return(diff)
 }
+
 confidence_curve_data$Confidence = sapply(confidence_curve_data$n, conf.value)
 
 # We want this boxplot to be on the right margin
@@ -255,9 +264,15 @@ empty <- ggplot()+geom_point(aes(1,1), colour="white")+
 
 
 confidence_curve_data = data.frame(n_val = seq(from = min_n, to = max_n, length.out = 100 ))
-post_dist_mu = ecdf(range_ns)
-conf.value = function(mu) {
-  diff = abs( 1/2 - post_dist_mu(mu)) * 2
+# Updating this 05/04/2021 wrt Jan Hannig's note from 04/30/2021:
+# conf.value = function(mu) {
+#   diff = abs( 1/2 - post_dist_mu(mu)) * 2
+#   return(diff)
+# }
+conf.value = function(n) {
+  less_or_equal = mean(range_ns<=n)
+  greater_or_equal = mean(range_ns>=n)
+  diff = 2*(max(c(less_or_equal,greater_or_equal))-0.5)
   return(diff)
 }
 confidence_curve_data$Confidence = sapply(confidence_curve_data$n, conf.value)
@@ -405,11 +420,19 @@ empty <- ggplot()+geom_point(aes(1,1), colour="white")+
 
 
 confidence_curve_data = data.frame(n_val = seq(from = min_n, to = max_n, length.out = 100 ))
-post_dist_mu = ecdf(range_ns)
-conf.value = function(mu) {
-  diff = abs( 1/2 - post_dist_mu(mu)) * 2
+
+# Updating this 05/04/2021 wrt Jan Hannig's note from 04/30/2021:
+# conf.value = function(mu) {
+#   diff = abs( 1/2 - post_dist_mu(mu)) * 2
+#   return(diff)
+# }
+conf.value = function(n) {
+  less_or_equal = mean(range_ns<=n)
+  greater_or_equal = mean(range_ns>=n)
+  diff = 2*(max(c(less_or_equal,greater_or_equal))-0.5)
   return(diff)
 }
+
 confidence_curve_data$Confidence = sapply(confidence_curve_data$n, conf.value)
 
 # We want this boxplot to be on the right margin
@@ -556,9 +579,15 @@ empty <- ggplot()+geom_point(aes(1,1), colour="white")+
 
 
 confidence_curve_data = data.frame(n_val = seq(from = min_n, to = max_n, length.out = 100 ))
-post_dist_mu = ecdf(range_ns)
-conf.value = function(mu) {
-  diff = abs( 1/2 - post_dist_mu(mu)) * 2
+# Updating this 05/04/2021 wrt Jan Hannig's note from 04/30/2021:
+# conf.value = function(mu) {
+#   diff = abs( 1/2 - post_dist_mu(mu)) * 2
+#   return(diff)
+# }
+conf.value = function(n) {
+  less_or_equal = mean(range_ns<=n)
+  greater_or_equal = mean(range_ns>=n)
+  diff = 2*(max(c(less_or_equal,greater_or_equal))-0.5)
   return(diff)
 }
 confidence_curve_data$Confidence = sapply(confidence_curve_data$n, conf.value)

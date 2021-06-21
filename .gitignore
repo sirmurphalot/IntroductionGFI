@@ -6,3 +6,6 @@ BinNAlgorithm/binData/*
 BinNAlgorithm/MD_Data/*
 BinNPGibbsSampler/BinData/*
 BinNPGibbsSampler/DataStore/*
+BinNPGibbsSampler/Rlogfiles/*
+BinNPGibbsSampler/testing_belief_plaus/*
+BinNPGibbsSampler/SLURMOUT/*

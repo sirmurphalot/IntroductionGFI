@@ -7,5 +7,7 @@ BinNAlgorithm/MD_Data/*
 BinNPGibbsSampler/BinData/*
 BinNPGibbsSampler/DataStore/*
 BinNPGibbsSampler/Rlogfiles/*
+BinNAlgorithm/DataStore/*
+BinNAlgorithm/Rlogfiles/*
 BinNPGibbsSampler/testing_belief_plaus/*
 BinNPGibbsSampler/SLURMOUT/*

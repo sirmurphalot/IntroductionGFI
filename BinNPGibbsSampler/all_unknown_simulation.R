@@ -66,6 +66,9 @@ for(TrueP in p_values){
     # Calculate the GFD
     x = get_fiducial_dictionary(my_data, iterations, starting_method = "MAX", 
                                    epsilon = 1/mean(my_data), user_n = NULL, MH_sigma)
+    ################################################################################################
+    ## Note: If one is trying to replicate our results, you should make your own DataStore directory.
+    ################################################################################################
     write.csv(x, file = paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
     ################################################################################################
     ## Note: It is possible to break up this calculation into two files -- one that performs the data simulation (above)
@@ -185,6 +188,10 @@ if(i < 10){
 }
 
 # Write each simulation's result to the BinData directory
+################################################################################################
+## Note: If one is trying to replicate our results, you should make your own BinData directory.
+################################################################################################
+
 write.csv(simulation_data, file = paste("BinData/binAllUnk_", num,".csv", sep = ""))
 
 

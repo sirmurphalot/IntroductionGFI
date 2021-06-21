@@ -3,6 +3,10 @@ PythonWork/*
 MVNModel/Data/*
 RandomEffectsModel/Data/*
 BinNAlgorithm/binData/*
+BinNAlgorithm/.DS_Store
+BinNAlgorithm/.Rhistory
+BinNPGibbsSampler/.DS_Store
+BinNPGibbsSampler/.Rhistory
 BinNAlgorithm/MD_Data/*
 BinNPGibbsSampler/BinData/*
 BinNPGibbsSampler/DataStore/*

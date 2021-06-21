@@ -3,7 +3,7 @@
 ###################################################
 ########### Author: Alexander Murph, UNC ##########
 ###################################################
-
+library(ggplot2)
 list.files(path = ".")
 full_data = data.frame(P = NA, MD = NA, parameter = NA, data_size = NA,
                        upper_p = NA, lower_p = NA)
@@ -17,11 +17,32 @@ full_data$P = as.factor(full_data$P)
 full_data$parameter[which(full_data$parameter=='bayesian-n')] = "bayesian"
 full_data$parameter[which(!(full_data$parameter=='bayesian'))] = "fiducial"
 
+full_data$approach = full_data$parameter
+full_data$data_size = as.character(full_data$data_size)
+full_data$data_size[which(full_data$data_size=="10")] = "size = 10"
+full_data$data_size[which(full_data$data_size=="50")] = "size = 50"
+full_data$data_size[which(full_data$data_size=="100")] = "size = 100"
+full_data$data_size = factor(full_data$data_size, levels=c("size = 10","size = 50","size = 100"))
+
 # All sizes MD:
-ggplot(full_data, aes(x = P, y = MD, color = parameter)) + ylab("MAD") + 
+
+ggplot(full_data, aes(x = P, y = MD, color = approach)) + ylab("MAD") + 
   geom_boxplot() + facet_grid( data_size ~ .) + 
   theme(text = element_text(size=30), axis.text.x = element_text(angle = 90), axis.title.x = element_text(size=20), 
         axis.title.y = element_text(size=20), legend.title = element_text(size=20))
+
+
+full_data = data.frame(P = NA, MD = NA, parameter = NA, data_size = NA,
+                       upper_p = NA, lower_p = NA)
+
+for(name in list.files(path = "MD_Data/")[-1]){
+  temp_data = read.csv(paste("MD_Data/",name, sep =""))[,-1]
+  full_data = rbind(full_data, temp_data)
+}
+full_data = full_data[-which(is.na(full_data$P)),]
+full_data$P = as.factor(full_data$P)
+full_data$parameter[which(full_data$parameter=='bayesian-n')] = "bayesian"
+full_data$parameter[which(!(full_data$parameter=='bayesian'))] = "fiducial"
 
 size = 100
 my_data = full_data[which(full_data$data_size ==size),]
@@ -66,6 +87,12 @@ for(P in P_values){
 error_bar_data = error_bar_data[-1,]
 error_bar_data$parameter[which(error_bar_data$parameter=='bayesian-n')] = "bayesian"
 error_bar_data$parameter[which(!(error_bar_data$parameter=='bayesian'))] = "fiducial"
+error_bar_data$approach = error_bar_data$parameter
+error_bar_data$data_size = as.character(error_bar_data$data_size)
+error_bar_data$data_size[which(error_bar_data$data_size=="10")] = "size = 10"
+error_bar_data$data_size[which(error_bar_data$data_size=="50")] = "size = 50"
+error_bar_data$data_size[which(error_bar_data$data_size=="100")] = "size = 100"
+error_bar_data$data_size = factor(error_bar_data$data_size, levels=c("size = 10","size = 50","size = 100"))
 ggplot() + geom_errorbar(data = error_bar_data, aes(x = P, ymin = n_min,
                                                     ymax = n_max, color = parameter), position = position_dodge(0.75)) +
   geom_hline(yintercept = 10,  linetype="dotted", color= "black") +  facet_grid( data_size ~ .)+ theme(text = element_text(size=20)) + ylab("n")+ 

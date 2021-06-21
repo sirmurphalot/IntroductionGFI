@@ -7,13 +7,13 @@
 #####################################################
 
 ### Uncomment these if you're working with SLURM cloud computing.
-# i = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID"))
-# print(paste("Running seed:", i))
-# set.seed(i)
+i = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID"))
+print(paste("Running seed:", i))
+set.seed(i)
 ### Comment this if you're working with SLURM cloud computing.
-i = 336
+# i = 1002
 source("_simulation_helpers.R")
-source("_belief_plaus_finder4.R")
+source("_belief_plaus_finder.R")
 
 #### SET THE PARAMETERS
 # Assuming your are on simulation i, generate the data.
@@ -26,6 +26,7 @@ p_values = c(p_values[mod_index])
 TrueN = true_ns[mod_index]
 data_sizes = c(100)
 iterations = 16000
+
 
 simulation_data = data.frame(TrueMu = NA,
                              TrueN = NA,
@@ -63,12 +64,18 @@ for(TrueP in p_values){
     TrueMu = TrueN * TrueP
     my_data = rbinom(sample_size, size = TrueN, prob = TrueP)
     # Calculate the GFD
-    # x = get_fiducial_dictionary(my_data, iterations, starting_method = "MAX", 
-    #                                epsilon = 1/mean(my_data), user_n = NULL, MH_sigma)
-    # write.csv(x, file = paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
-    x = read.csv(paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
-    # x = x[[1]]
-    x = x[which(x$iteration_number %in% floor(15.8*iterations/16):iterations),]
+    x = get_fiducial_dictionary(my_data, iterations, starting_method = "MAX", 
+                                   epsilon = 1/mean(my_data), user_n = NULL, MH_sigma)
+    write.csv(x, file = paste("DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
+    ################################################################################################
+    ## Note: It is possible to break up this calculation into two files -- one that performs the data simulation (above)
+    ##       and another that performs the belief/plausability box calculations (below).  One might want to consider this
+    ##       based on computing limitations.  If you do, simply read the file in like so:
+    ## x = read.csv(paste("../DataStore/fiddraw_",i,"_",TrueP*10,TrueN,".csv",sep=""))
+    ##       and comment out (x = x[[1]]).
+    ################################################################################################
+    x = x[[1]]
+    x = x[which(x$iteration_number %in% floor(iterations/2):iterations),]
     x$lower_mu = x$lower_p * x$n_value
     x$upper_mu = x$upper_p * x$n_value
     
@@ -179,4 +186,5 @@ if(i < 10){
 
 # Write each simulation's result to the BinData directory
 write.csv(simulation_data, file = paste("BinData/binAllUnk_", num,".csv", sep = ""))
+
 

@@ -739,6 +739,7 @@ p2
 ###############################################################################################
 ###############################################################################################
 # Marginal Coverages Information for Table:
+
 simulation_data = data.frame(TrueMu = NA,
                              TrueN = NA,
                              TrueP = NA,
@@ -774,7 +775,6 @@ p_values = c(0.1, 0.5, 0.9)
 data_sizes = c(100)
 true_ns  = c(15, 75)
 
-#### COMPILE DATA FROM BINDATA DIRECTORY
 for(name in list.files(path = "BinData/")){
   new_rows = read.csv(paste("BinData/", name, sep = ""))
   new_rows$X = NULL
@@ -791,7 +791,9 @@ for(p_val in p_values){
   for(n_val in true_ns){
     simulation_data_temp = simulation_data[which( (simulation_data$TrueP==p_val) &
                                                     (simulation_data$TrueN==n_val) ),]
-    print(paste("(",p_val,",",n_val,") mu marginal coverage: ", mean(simulation_data_temp$mu_lower_CI<=0.95) ))
+    print(paste("(",p_val,",",n_val,") mu marginal coverage: ", mean((simulation_data_temp$mu_lower_CI<=0.975)&(simulation_data_temp$mu_upper_CI<=0.975)) ))
     print(paste("(",p_val,",",n_val,") n marginal coverage: ", mean(simulation_data_temp$n_lower_CI<=0.95) ))
+    print(paste("(",p_val,",",n_val,") belief coverage: ", mean(simulation_data_temp$pois_belief_contains_truth) ))
+    print(paste("(",p_val,",",n_val,") plausability coverage: ", mean(simulation_data_temp$pois_plausability_contains_truth) ))
   }
 }

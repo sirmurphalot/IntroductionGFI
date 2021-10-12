@@ -40,8 +40,8 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
-  geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  geom_vline(xintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1)) +
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))+ 
   theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
         axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 pmainTest
@@ -157,11 +157,11 @@ for(i in unique(error_bar_data$iteration_number)){
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
-  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
@@ -196,8 +196,8 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
   scale_y_continuous(expand = c(0, 0)) +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"),
         legend.key.height = unit(1, "inch"))+
-  geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  geom_vline(xintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1)) +
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))+ 
   theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
         axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=30))
 pmainTest
@@ -310,11 +310,11 @@ for(i in unique(error_bar_data$iteration_number)){
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
-  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
@@ -352,8 +352,8 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
   scale_y_continuous(expand = c(0, 0)) +
   colScale +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
-  geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  geom_vline(xintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1)) +
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))+ 
   theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
         axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 pmainTest
@@ -469,11 +469,11 @@ for(i in unique(error_bar_data$iteration_number)){
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
-  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
 
@@ -511,8 +511,8 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
   scale_y_continuous(expand = c(0, 0)) +
   colScale +
   theme(plot.margin = unit(c(0.2, 0.2, 0.5, 0.5), "lines"))+
-  geom_vline(xintercept= c(n_hat, n), color = c("darkorchid2", "red")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))+ 
+  geom_vline(xintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1)) +
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))+ 
   theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
         axis.title.y = element_text(size=20), legend.title = element_text(size=20), legend.text = element_text(size=17))
 pmainTest

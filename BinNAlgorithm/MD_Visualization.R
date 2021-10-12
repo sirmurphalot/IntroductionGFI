@@ -29,7 +29,8 @@ full_data$data_size = factor(full_data$data_size, levels=c("size = 10","size = 5
 ggplot(full_data, aes(x = P, y = MD, color = approach)) + ylab("MAD") + 
   geom_boxplot() + facet_grid( data_size ~ .) + 
   theme(text = element_text(size=30), axis.text.x = element_text(angle = 90), axis.title.x = element_text(size=20), 
-        axis.title.y = element_text(size=20), legend.title = element_text(size=20))
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20))+ 
+  scale_color_grey()
 
 
 full_data = data.frame(P = NA, MD = NA, parameter = NA, data_size = NA,
@@ -54,10 +55,11 @@ ggplot(my_data, aes(x = P, y = MD, color = parameter)) + geom_boxplot() +
 ggplot(my_data, aes(x = upper_p, color = P, linetype = parameter)) + stat_ecdf() + 
   xlab("Nominal Coverage") + ylab("Empirical Coverage")+ 
   guides(linetype=guide_legend(title="Approach")) +
-  scale_color_manual(values=unlist(lapply(c(0.4, 0.5, 0.55, 0.6, 0.75, 0.8, 0.85, 0.9, 0, 0.05, 0.12, .15), colors))) + 
+  # scale_color_manual(values=unlist(lapply(c(0.4, 0.5, 0.55, 0.6, 0.75, 0.8, 0.85, 0.9, 0, 0.05, 0.12, .15), colors))) + 
   guides(color = guide_legend(override.aes = list(size = 2))) + 
   theme(text = element_text(size=30), axis.title.x = element_text(size=20), 
-        axis.title.y = element_text(size=20), legend.title = element_text(size=20))
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20))+ 
+  scale_color_grey()
 
 
 my_data = read.csv("binomial_simulation_data.csv")
@@ -97,6 +99,7 @@ ggplot() + geom_errorbar(data = error_bar_data, aes(x = P, ymin = n_min,
                                                     ymax = n_max, color = parameter), position = position_dodge(0.75)) +
   geom_hline(yintercept = 10,  linetype="dotted", color= "black") +  facet_grid( data_size ~ .)+ theme(text = element_text(size=20)) + ylab("n")+ 
   theme(text = element_text(size=30), axis.text.x = element_text(angle = 90), axis.title.x = element_text(size=20), 
-        axis.title.y = element_text(size=20), legend.title = element_text(size=20))
+        axis.title.y = element_text(size=20), legend.title = element_text(size=20))  + 
+  scale_color_grey()
 
 

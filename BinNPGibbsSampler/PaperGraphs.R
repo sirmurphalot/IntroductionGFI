@@ -189,7 +189,7 @@ pmainTest = ggplot(data = error_bar_data, aes(x = n_value, ymin = lower_mu,
   coord_flip() +
   geom_errorbar(position = position_dodge(1)) + xlab(TeX("$n$")) + ylab(TeX("$\\mu$")) +
   scale_color_gradient2(midpoint = Mid, low="white", mid = "skyblue", high="navyblue") +
-  # theme(legend.position = "none") + 
+  theme(legend.position = "none") +
   geom_point(size = -1) +
   labs( color ="Iteration Number\n")+
   scale_x_continuous(expand = c(0, 0)) +
@@ -627,11 +627,11 @@ for(i in unique(error_bar_data$iteration_number)){
 graph_data = data.frame(x=5000:10000,mus=marginal_mus)
 p1 = ggplot(graph_data,aes(x=x,y=mus)) + geom_line(color="turquoise3") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("")+ ylab(TeX("$\\mu$")) +
-  geom_hline(yintercept=c(first_mu, p*n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept=c(first_mu, p*n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 graph_data2 = data.frame(x=5000:10000,ns=marginal_ns)
 p2 = ggplot(graph_data2,aes(x=x,y=ns)) + geom_line(color="darkblue") +
   theme(legend.position = "none", text = element_text(size=25)) + xlab("iteration") + ylab("n") +
-  geom_hline(yintercept= c(n_hat, n), color = c("darkorchid2", "red"))
+  geom_hline(yintercept= c(n_hat, n), linetype = c("dotted", "longdash"), color = c("red","red"), size = c(1,1))
 grid.arrange(p1,p2, ncol=1, nrow=2)
 
 

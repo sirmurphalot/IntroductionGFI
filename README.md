@@ -1,5 +1,5 @@
-[![arXiv](https://img.shields.io/badge/arXiv-2302.14598-GREEN.svg)](https://arxiv.org/abs/2302.14598)
 # **Introduction to Generalized Fiducial Inference** 
+[![arXiv](https://img.shields.io/badge/arXiv-2302.14598-GREEN.svg)](https://arxiv.org/abs/2302.14598)
 
 For questions, issues, or clarifications please reach out to Murph: <acmurph@unc.edu>.
 
